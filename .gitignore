@@ -8,6 +8,9 @@ node_modules
 
 # testing
 /coverage
+/sonar-project.properties
+/.scannerwork/.sonar_lock
+/.scannerwork/report-task.txt
 
 # production
 /build
