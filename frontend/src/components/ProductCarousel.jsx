@@ -6,9 +6,15 @@ import { useGetTopProductsQuery } from '../slices/productsApiSlice';
 const ProductCarousel = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery();
 
-  return isLoading ? null : error ? (
-    <Message variant='danger'>{error?.data?.message || error.error}</Message>
-  ) : (
+  if (isLoading) {
+    return null;
+  }
+
+  if (error) {
+    return <Message variant='danger'>{error?.data?.message || error.error}</Message>;
+  }
+
+  return (
     <Carousel pause='hover' className='bg-primary mb-4'>
       {products.map((product) => (
         <Carousel.Item key={product._id}>
