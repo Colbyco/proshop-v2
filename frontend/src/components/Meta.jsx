@@ -13,9 +13,9 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.propTypes = {
-  title: PropTypes.string.isRequired, // Assuming 'title' is always required
-  description: PropTypes.string.isRequired,   // Adding 'description' prop validation
-  keywords: PropTypes.string.isRequired,   // Adding 'keywords' prop validation
+  title: PropTypes.string, // Assuming 'title' is always required
+  description: PropTypes.string,   // Adding 'description' prop validation
+  keywords: PropTypes.string,   // Adding 'keywords' prop validation
 };
 
 Meta.defaultProps = {

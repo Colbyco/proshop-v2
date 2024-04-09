@@ -6,7 +6,7 @@ const Message = ({ variant, children }) => {
 };
 
 Message.propTypes = {
-  variant: PropTypes.string.isRequired, // Assuming 'variant' is always required
+  variant: PropTypes.string, // Assuming 'variant' is always required
   children: PropTypes.node.isRequired,   // Adding 'children' prop validation
 };
 
