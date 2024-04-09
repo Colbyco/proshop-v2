@@ -29,3 +29,7 @@ uploads/*jpg
 
 # API tests
 http
+
+# scanner stuff
+/.scannerwork
+sonar-project.properties
