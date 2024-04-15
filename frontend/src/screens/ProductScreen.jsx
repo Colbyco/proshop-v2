@@ -20,6 +20,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
+import { addToSaved } from '../slices/savedSlice'; // adding saved items to the product screen
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -35,6 +36,12 @@ const ProductScreen = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate('/cart');
   };
+
+  //adding a button to save the item for later
+  const saveToSavedHandler = () => {
+    dispatch(addToSaved({ ...product }));
+    toast.success('Item has been saved');
+  }
 
   const {
     data: product,
@@ -154,6 +161,16 @@ const ProductScreen = () => {
                   >
                     Add To Cart
                   </Button>
+
+                  <Button
+                    className='btn-block mt-2'
+                    type='button'
+                    disabled={product.countInStock === 0}
+                    onClick={saveToSavedHandler}
+                  >
+                    Save For Later
+                  </Button>
+
                 </ListGroup.Item>
               </ListGroup>
             </Card>

@@ -11,6 +11,7 @@ import { resetCart } from '../slices/cartSlice';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const { savedItems } = useSelector((state) => state.saved);   //adding saved items to the header
   const { userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -44,6 +45,16 @@ const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
               <SearchBox />
+              <LinkContainer to='/saved'>
+                <Nav.Link>
+                  Saved Items
+                  {savedItems.length > 0 && (
+                    <Badge pill bg='info' style={{ marginLeft: '5px' }}>
+                      {savedItems.length}
+                    </Badge>
+                  )}
+                </Nav.Link>
+              </LinkContainer>
               <LinkContainer to='/cart'>
                 <Nav.Link>
                   <FaShoppingCart /> Cart
