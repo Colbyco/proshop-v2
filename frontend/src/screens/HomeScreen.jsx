@@ -67,7 +67,7 @@ const HomeScreen = () => {
           Go Back
         </Link>
       )}
-            <Form onSubmit={submitHandler} className="mb-4">
+        <Form onSubmit={submitHandler} className="mb-4">
         <Row>
           <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
             <Form.Control
