@@ -26,6 +26,7 @@ const cartSlice = createSlice({
 
       return updateCart(state, item);
     },
+    
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
       return updateCart(state);
@@ -42,6 +43,24 @@ const cartSlice = createSlice({
       state.cartItems = [];
       localStorage.setItem('cart', JSON.stringify(state));
     },
+    // addToCartFromSaved reducer
+    addToCartFromSaved: (state, action) => {
+        const { user, rating, numReviews, reviews, ...item } = action.payload;
+
+        const existItem = state.cartItems.find((x) => x._id === item._id);
+
+        if (existItem) {
+            // if the item is already in the cart, update the quantity + 1
+            state.cartItems = state.cartItems.map((x) =>
+                x._id === existItem._id ? { ...item, qty: x.qty + 1 } : x
+            );
+        } else {
+          state.cartItems = [...state.cartItems, item];
+        }
+
+        return updateCart(state, item);
+    },
+            
     // NOTE: here we need to reset state for when a user logs out so the next
     // user doesn't inherit the previous users cart and shipping
     resetCart: (state) => (state = initialState),
@@ -55,6 +74,7 @@ export const {
   savePaymentMethod,
   clearCartItems,
   resetCart,
+  addToCartFromSaved
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
