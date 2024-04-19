@@ -8,6 +8,9 @@ import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+
 
 const HomeScreen = () => {
   const { pageNumber, keyword } = useParams();
@@ -63,6 +66,47 @@ const HomeScreen = () => {
           Go Back
         </Link>
       )}
+            <Form onSubmit={submitHandler} className="mb-4">
+        <Row>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Form.Control
+              type="number"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+            />
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Form.Control
+              type="number"
+              placeholder="Max Price"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+            />
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={3} className="mb-3">
+            <Form.Control
+              as="select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categoriesData &&
+                categoriesData.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+            </Form.Control>
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Button type="submit" variant="primary">Apply Filters</Button>
+          </Col>
+        </Row>
+      </Form>
+
+
+
       {isLoading ? (
         <Loader />
       ) : error ? (
