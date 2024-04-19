@@ -9,6 +9,16 @@ import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 
+import {
+  LoginSocialGoogle,
+  LoginSocialFacebook,
+} from 'reactjs-social-login'
+
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from 'react-social-login-buttons'
+
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,6 +91,36 @@ const LoginScreen = () => {
           </Link>
         </Col>
       </Row>
+
+      <LoginSocialGoogle
+            isOnlyGetToken
+            client_id={process.env.REACT_APP_GG_APP_ID || ''}
+            //onLoginStart={onLoginStart}
+            onResolve={({ provider, data }) => {
+              //setProvider(provider)
+              //setProfile(data)
+            }}
+            onReject={(err) => {
+              console.log(err)
+            }}
+          >
+            <GoogleLoginButton />
+          </LoginSocialGoogle>
+
+        <LoginSocialFacebook
+          isOnlyGetToken
+          appId={process.env.REACT_APP_FB_APP_ID || ''}
+          //onLoginStart={onLoginStart}
+          onResolve={({ provider, data }) => {
+            //setProvider(provider)
+            //setProfile(data)
+          }}
+          onReject={(err) => {
+            console.log(err)
+          }}
+        >
+          <FacebookLoginButton />
+        </LoginSocialFacebook>
     </FormContainer>
   );
 };
