@@ -26,7 +26,8 @@ const getProducts = asyncHandler(async (req, res) => {
 
   // res.json({ products, page, pages: Math.ceil(count / pageSize) });
 
-
+  const pageSize = process.env.PAGINATION_LIMIT;
+  const page = Number(req.query.pageNumber) || 1;
 
   const { keyword, minPrice, maxPrice, category } = req.query;
 
