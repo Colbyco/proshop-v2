@@ -21,7 +21,8 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
-
+import { FacebookShareButton, TwitterShareButton, PinterestShareButton, RedditShareButton  } from 'react-share';
+import { FaFacebookSquare, FaTwitter, FaPinterest, FaReddit } from 'react-icons/fa'; // Import icons
 const ProductScreen = () => {
   const { id: productId } = useParams();
 
@@ -153,7 +154,24 @@ const ProductScreen = () => {
                     >
                       Add To Cart
                     </Button>
-                  </ListGroup.Item>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+
+                    <div className="social-media-icons">
+                <FacebookShareButton url={window.location.href} quote={product.name}>
+                  <FaFacebookSquare className='share-icon'/>
+                </FacebookShareButton>
+                <TwitterShareButton url={window.location.href} title={product.name}>
+                  <FaTwitter className='share-icon'/>
+                </TwitterShareButton>
+                <PinterestShareButton url={window.location.href} media={product.image} description={product.name}>
+                  <FaPinterest className='share-icon' />
+                </PinterestShareButton>
+                <RedditShareButton url={window.location.href} media={product.image} description={product.name}>
+                  <FaReddit className='share-icon' />
+                </RedditShareButton>
+              </div>
+                    </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>
