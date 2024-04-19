@@ -5,24 +5,64 @@ import Product from '../models/productModel.js';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = process.env.PAGINATION_LIMIT;
-  const page = Number(req.query.pageNumber) || 1;
+  // const pageSize = process.env.PAGINATION_LIMIT;
+  // const page = Number(req.query.pageNumber) || 1;
 
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: 'i',
-        },
-      }
-    : {};
+  // const keyword = req.query.keyword
+  //   ? {
+  //       name: {
+  //         $regex: req.query.keyword,
+  //         $options: 'i',
+  //       },
+  //     }
+  //   : {};
 
-  const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+  
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  // const count = await Product.countDocuments({ ...keyword });
+  // const products = await Product.find({ ...keyword })
+  //   .limit(pageSize)
+  //   .skip(pageSize * (page - 1));
+
+  // res.json({ products, page, pages: Math.ceil(count / pageSize) });
+
+
+
+  const { keyword, minPrice, maxPrice, category } = req.query;
+
+  // Construct query object for MongoDB
+  let query = {};
+
+  // Apply keyword search
+  if (keyword) {
+    query.name = {
+      $regex: keyword,
+      $options: 'i',
+    };
+  }
+
+  // Apply price range filter
+  if (minPrice && maxPrice) {
+    query.price = {
+      $gte: minPrice,
+      $lte: maxPrice,
+    };
+  }
+
+  // Apply category filter
+  if (category) {
+    query.category = category;
+  }
+
+    // Count total matching documents
+    const count = await Product.countDocuments(query);
+
+    // Fetch products based on the constructed query
+    const products = await Product.find(query)
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+  
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc    Fetch single product
