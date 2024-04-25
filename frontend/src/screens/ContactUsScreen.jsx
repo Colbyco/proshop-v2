@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { submitContactForm } from '../slices/contactSlice';
+import { useDispatch } from 'react-redux';
 
 const ContactUsScreen = () => {
   const [formData, setFormData] = useState({
@@ -18,19 +21,21 @@ const ContactUsScreen = () => {
     });
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData);
+      await dispatch(submitContactForm(formData));
+      toast.success('Message sent successfully!');
       setFormData({
         name: '',
         email: '',
         subject: '',
         message: ''
       });
-      toast.success('Message sent successfully!');
     } catch (error) {
-      toast.error('Failed to send message. Please try again later.');
+      toast.error(error.message || 'Failed to send message. Please try again later.');
     }
   };
 
