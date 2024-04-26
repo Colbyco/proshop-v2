@@ -21,8 +21,9 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
-import { FacebookShareButton, TwitterShareButton, PinterestShareButton, RedditShareButton  } from 'react-share';
-import { FaFacebookSquare, FaTwitter, FaPinterest, FaReddit } from 'react-icons/fa'; // Import icons
+import { TwitterShareButton, PinterestShareButton, RedditShareButton, EmailShareButton, WhatsappShareButton } from 'react-share';
+import { FaTwitter, FaPinterest, FaReddit, FaEnvelope, FaWhatsapp } from 'react-icons/fa'; // Import icons
+
 const ProductScreen = () => {
   const { id: productId } = useParams();
 
@@ -156,21 +157,24 @@ const ProductScreen = () => {
                     </Button>
                     </ListGroup.Item>
                     <ListGroup.Item>
-
-                    <div className="social-media-icons">
-                <FacebookShareButton url={window.location.href} quote={product.name}>
-                  <FaFacebookSquare className='share-icon'/>
-                </FacebookShareButton>
-                <TwitterShareButton url={window.location.href} title={product.name}>
-                  <FaTwitter className='share-icon'/>
-                </TwitterShareButton>
-                <PinterestShareButton url={window.location.href} media={product.image} description={product.name}>
-                  <FaPinterest className='share-icon' />
-                </PinterestShareButton>
-                <RedditShareButton url={window.location.href} media={product.image} description={product.name}>
-                  <FaReddit className='share-icon' />
-                </RedditShareButton>
-              </div>
+                          <div className="social-media-icons">
+                          {/* Added Share Buttons */}
+                          <TwitterShareButton url={window.location.href} title={product.name}>
+                            <FaTwitter className='share-icon'/>
+                          </TwitterShareButton>
+                          <PinterestShareButton url={window.location.href} media={product.image} description={product.name}>
+                            <FaPinterest className='share-icon' />
+                          </PinterestShareButton>
+                          <RedditShareButton url={window.location.href} media={product.image} description={product.name}>
+                            <FaReddit className='share-icon' />
+                          </RedditShareButton>
+                          <WhatsappShareButton url={window.location.href} title={product.name}>
+                            <FaWhatsapp className='share-icon' />
+                          </WhatsappShareButton>
+                          <EmailShareButton url={window.location.href} subject={product.name} body={product.description}>
+                            <FaEnvelope className='share-icon' />
+                          </EmailShareButton>
+                        </div>
                     </ListGroup.Item>
                 </ListGroup>
               </Card>
