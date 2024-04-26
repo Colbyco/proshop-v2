@@ -20,7 +20,12 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
+<<<<<<< HEAD
 import { addToSaved } from '../slices/savedSlice'; // adding saved items to the product screen
+=======
+import { TwitterShareButton, PinterestShareButton, RedditShareButton, EmailShareButton, WhatsappShareButton } from 'react-share';
+import { FaTwitter, FaPinterest, FaReddit, FaEnvelope, FaWhatsapp } from 'react-icons/fa'; // Import icons
+>>>>>>> origin/alaina
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -134,6 +139,102 @@ const ProductScreen = () => {
                     <Row>
                       <Col>Qty</Col>
                       <Col>
+<<<<<<< HEAD
+=======
+                        <strong>${product.price}</strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Status:</Col>
+                      <Col>
+                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+
+                  {/* Qty Select */}
+                  {product.countInStock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Qty</Col>
+                        <Col>
+                          <Form.Control
+                            as='select'
+                            value={qty}
+                            onChange={(e) => setQty(Number(e.target.value))}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
+                                <option key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
+
+                  <ListGroup.Item>
+                    <Button
+                      className='btn-block'
+                      type='button'
+                      disabled={product.countInStock === 0}
+                      onClick={addToCartHandler}
+                    >
+                      Add To Cart
+                    </Button>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                          <div className="social-media-icons">
+                          {/* Added Share Buttons */}
+                          <TwitterShareButton url={window.location.href} title={product.name}>
+                            <FaTwitter className='share-icon'/>
+                          </TwitterShareButton>
+                          <PinterestShareButton url={window.location.href} media={product.image} description={product.name}>
+                            <FaPinterest className='share-icon' />
+                          </PinterestShareButton>
+                          <RedditShareButton url={window.location.href} media={product.image} description={product.name}>
+                            <FaReddit className='share-icon' />
+                          </RedditShareButton>
+                          <WhatsappShareButton url={window.location.href} title={product.name}>
+                            <FaWhatsapp className='share-icon' />
+                          </WhatsappShareButton>
+                          <EmailShareButton url={window.location.href} subject={product.name} body={product.description}>
+                            <FaEnvelope className='share-icon' />
+                          </EmailShareButton>
+                        </div>
+                    </ListGroup.Item>
+                </ListGroup>
+              </Card>
+            </Col>
+          </Row>
+          <Row className='review'>
+            <Col md={6}>
+              <h2>Reviews</h2>
+              {product.reviews.length === 0 && <Message>No Reviews</Message>}
+              <ListGroup variant='flush'>
+                {product.reviews.map((review) => (
+                  <ListGroup.Item key={review._id}>
+                    <strong>{review.name}</strong>
+                    <Rating value={review.rating} />
+                    <p>{review.createdAt.substring(0, 10)}</p>
+                    <p>{review.comment}</p>
+                  </ListGroup.Item>
+                ))}
+                <ListGroup.Item>
+                  <h2>Write a Customer Review</h2>
+
+                  {loadingProductReview && <Loader />}
+
+                  {userInfo ? (
+                    <Form onSubmit={submitHandler}>
+                      <Form.Group className='my-2' controlId='rating'>
+                        <Form.Label>Rating</Form.Label>
+>>>>>>> origin/alaina
                         <Form.Control
                           as='select'
                           value={qty}

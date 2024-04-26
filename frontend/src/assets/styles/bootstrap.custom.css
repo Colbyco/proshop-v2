@@ -9242,6 +9242,10 @@ fieldset:disabled .btn {
   visibility: visible !important;
 }
 
+.share-icon {
+  font-size: 40px; /* Change the font size to increase or decrease the icon size */
+}
+
 .invisible {
   visibility: hidden !important;
 }
