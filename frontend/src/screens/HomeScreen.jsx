@@ -22,36 +22,36 @@ const HomeScreen = () => {
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     keyword,
     pageNumber,
+    queryParams,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
-  console.log(categoriesData);
   const submitHandler = (e) => {
     e.preventDefault();
     console.log('Submit button clicked!');
 
-      const queryParams = {};
+    const queryParams = {};
 
-    // Add minimum price to the query params if it's not empty
     if (minPrice !== "") {
       queryParams.minPrice = minPrice;
     }
 
-    // Add maximum price to the query params if it's not empty
     if (maxPrice) {
       queryParams.maxPrice = maxPrice;
     }
 
-  
-
-    // Add selected category to the query params if it's not empty
     if (selectedCategory) {
-      queryParams.category = selectedCategory;
+    queryParams.category = selectedCategory;
     }
+    console.log('Query parameters:', queryParams); // Log the constructed query parameters
 
-    refetch({ keyword, pageNumber, ...queryParams });
-    // Refetch products with new filter values
-    // Optionally, you can also update the URL query params
+    refetch({ keyword, pageNumber, ...queryParams })
+      .then((data) => {
+        console.log('Data after refetch:', data); // Log the data received after refetching
+      })
+      .catch((error) => {
+        console.error('Error during refetch:', error); // Log any errors that occur during refetching
+      });
   };
 
   return (
