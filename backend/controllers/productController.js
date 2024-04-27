@@ -195,13 +195,18 @@ const getTopProducts = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get categories of products
-// @route   GET /api/products/categories
+// @route   GET /api/product/categories
 // @access  Public
 const getProductCategories = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
-
-  res.json(products.category);
+  try {
+    const categories = await Product.distinct('category');
+    res.json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 });
+
 
 
 export {
