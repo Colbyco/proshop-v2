@@ -32,7 +32,7 @@ const HomeScreen = () => {
       const queryParams = {};
 
     // Add minimum price to the query params if it's not empty
-    if (minPrice) {
+    if (minPrice !== "") {
       queryParams.minPrice = minPrice;
     }
 
