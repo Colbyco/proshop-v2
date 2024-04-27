@@ -8,13 +8,17 @@ import {
   deleteProduct,
   createProductReview,
   getTopProducts,
+  getProductCategories,
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
+import { useGetProductCategoriesQuery } from '../../frontend/src/slices/productsApiSlice.js';
 
 router.route('/').get(getProducts).post(protect, admin, createProduct);
 router.route('/:id/reviews').post(protect, checkObjectId, createProductReview);
 router.get('/top', getTopProducts);
+router.get('/categories', getProductCategories);
+
 router
   .route('/:id')
   .get(checkObjectId, getProductById)
