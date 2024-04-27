@@ -22,9 +22,6 @@ const HomeScreen = () => {
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     keyword,
     pageNumber,
-    minPrice,
-    maxPrice,
-    category: selectedCategory,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();

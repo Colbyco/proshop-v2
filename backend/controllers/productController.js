@@ -46,20 +46,22 @@ const getProducts = asyncHandler(async (req, res) => {
   }
 
   // Apply price range filter
-  if (minPrice) {
+  
+  
+  if (minPrice && maxPrice)
+  {
+    query.price = {
+      $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
+      $lte: parseFloat(maxPrice),
+    };
+  }
+  else if (minPrice) {
     query.price = {
       $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
     };
   }
   else if (maxPrice) {
     query.price = {
-      $lte: parseFloat(maxPrice),
-    };
-  }
-  else if (minPrice && maxPrice)
-  {
-    query.price = {
-      $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
       $lte: parseFloat(maxPrice),
     };
   }
