@@ -28,7 +28,7 @@ const HomeScreen = () => {
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
-
+  console.log(categoriesData);
   const submitHandler = (e) => {
     e.preventDefault();
     try {

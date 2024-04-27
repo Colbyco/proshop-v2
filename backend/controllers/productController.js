@@ -58,7 +58,6 @@ const getProducts = asyncHandler(async (req, res) => {
     // Count total matching documents
     const count = await Product.countDocuments(query);
 
-    // Fetch products based on the constructed query
     const products = await Product.find(query)
       .limit(pageSize)
       .skip(pageSize * (page - 1));
