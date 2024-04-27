@@ -18,10 +18,14 @@ const HomeScreen = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const queryParams = {};
+
+
 
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     keyword,
     pageNumber,
+    queryParams,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
@@ -29,7 +33,6 @@ const HomeScreen = () => {
     e.preventDefault();
     console.log('Submit button clicked!');
 
-    const queryParams = {};
 
     if (minPrice !== "") {
       queryParams.minPrice = minPrice;
