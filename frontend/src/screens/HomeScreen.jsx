@@ -27,7 +27,7 @@ const HomeScreen = () => {
     pageNumber,
     minPrice,
     maxPrice,
-    selectedCategory,
+    category: selectedCategory,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
@@ -40,12 +40,12 @@ const HomeScreen = () => {
       queryParams.minPrice = minPrice;
     }
 
-    if (maxPrice) {
+    if (maxPrice!== "") {
       queryParams.maxPrice = maxPrice;
     }
 
-    if (selectedCategory) {
-    queryParams.category = selectedCategory;
+    if (selectedCategory !== "") {
+      queryParams.category = selectedCategory;
     }
     console.log('Query parameters:', queryParams); // Log the constructed query parameters
 
