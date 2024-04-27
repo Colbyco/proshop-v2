@@ -48,8 +48,8 @@ const getProducts = asyncHandler(async (req, res) => {
   // Apply price range filter
   if (minPrice && maxPrice) {
     query.price = {
-      $gte: minPrice,
-      $lte: maxPrice,
+      $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
+      $lte: parseFloat(maxPrice),
     };
   }
 
@@ -58,14 +58,20 @@ const getProducts = asyncHandler(async (req, res) => {
     query.category = category;
   }
 
+  try {
     // Count total matching documents
     const count = await Product.countDocuments(query);
 
+    // Find products matching the query
     const products = await Product.find(query)
       .limit(pageSize)
       .skip(pageSize * (page - 1));
-  
+
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 });
 
 // @desc    Fetch single product
