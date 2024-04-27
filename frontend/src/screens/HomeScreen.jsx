@@ -109,9 +109,9 @@ const HomeScreen = () => {
                 ))}
             </Form.Control>
           </Col>
-          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+          {/* <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
             <Button type="submit" variant="primary">Apply Filters</Button>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
 
