@@ -28,7 +28,8 @@ const HomeScreen = () => {
   console.log(categoriesData);
   const submitHandler = (e) => {
     e.preventDefault();
-    try {
+    console.log('Submit button clicked!');
+
       const queryParams = {};
 
     // Add minimum price to the query params if it's not empty
@@ -49,10 +50,6 @@ const HomeScreen = () => {
     }
 
     refetch({ keyword, pageNumber, ...queryParams });
-
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
-    }
     // Refetch products with new filter values
     // Optionally, you can also update the URL query params
   };
