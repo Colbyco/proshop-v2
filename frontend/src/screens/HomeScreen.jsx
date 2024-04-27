@@ -34,6 +34,8 @@ const HomeScreen = () => {
     try {
       const queryParams = {};
 
+    console.log('minPrice:', minPrice);
+    console.log('maxPrice:', maxPrice);
     // Add minimum price to the query params if it's not empty
     if (minPrice) {
       queryParams.minPrice = minPrice;
@@ -44,10 +46,13 @@ const HomeScreen = () => {
       queryParams.maxPrice = maxPrice;
     }
 
+  
+
     // Add selected category to the query params if it's not empty
     if (selectedCategory) {
       queryParams.category = selectedCategory;
     }
+    console.log('queryParams:', queryParams);
 
     refetch({ keyword, pageNumber, ...queryParams });
 

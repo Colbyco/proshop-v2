@@ -31,6 +31,9 @@ const getProducts = asyncHandler(async (req, res) => {
 
   const { keyword, minPrice, maxPrice, category } = req.query;
 
+  console.log('Received minPrice:', minPrice);
+  console.log('Received maxPrice:', maxPrice);
+  console.log('Received category:', category);
   // Construct query object for MongoDB
   let query = {};
 
