@@ -36,8 +36,54 @@ const HomeScreen = () => {
         <Link to='/' className='btn btn-light mb-4'>
           Go Back
         </Link>
-      )} <Filter />
-        
+      )}
+        <Form onSubmit={submitHandler} className="mb-4">
+        <Row>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Form.Control
+              type="number"
+              placeholder="Min Price"
+              value={minPrice}
+              onChange={(e) => {
+                console.log('Input value:', e.target.value);
+                setMinPrice(e.target.value);
+              }}
+            />
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Form.Control
+              type="number"
+              placeholder="Max Price"
+              value={maxPrice}
+              onChange={(e) => {
+                console.log('Input value:', e.target.value);
+                setMaxPrice(e.target.value);
+              }}
+            />
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={3} className="mb-3">
+            <Form.Control
+              as="select"
+              value={selectedCategory}
+              onChange={(e) => {
+                console.log('Input value:', e.target.value);
+                setSelectedCategory(e.target.value);
+              }}
+            >
+              <option value="">All Categories</option>
+              {categoriesData &&
+                categoriesData.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+            </Form.Control>
+          </Col>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Button type="submit" variant="primary">Apply Filters</Button>
+          </Col>
+        </Row>
+      </Form>
 
 
 
