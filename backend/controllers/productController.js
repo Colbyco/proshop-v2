@@ -5,39 +5,13 @@ import Product from '../models/productModel.js';
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  // const pageSize = process.env.PAGINATION_LIMIT;
-  // const page = Number(req.query.pageNumber) || 1;
-
-  // const keyword = req.query.keyword
-  //   ? {
-  //       name: {
-  //         $regex: req.query.keyword,
-  //         $options: 'i',
-  //       },
-  //     }
-  //   : {};
-
-  
-
-  // const count = await Product.countDocuments({ ...keyword });
-  // const products = await Product.find({ ...keyword })
-  //   .limit(pageSize)
-  //   .skip(pageSize * (page - 1));
-
-  // res.json({ products, page, pages: Math.ceil(count / pageSize) });
-
   const pageSize = process.env.PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
 
   const { keyword, minPrice, maxPrice, category } = req.query;
 
-  console.log('Received minPrice:', minPrice);
-  console.log('Received maxPrice:', maxPrice);
-  console.log('Received category:', category);
-  // Construct query object for MongoDB
   let query = {};
 
-  // Apply keyword search
   if (keyword) {
     query.name = {
       $regex: keyword,
@@ -45,19 +19,16 @@ const getProducts = asyncHandler(async (req, res) => {
     };
   }
 
-  // Apply price range filter
-  
-  
   if (minPrice && maxPrice)
   {
     query.price = {
-      $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
+      $gte: parseFloat(minPrice),
       $lte: parseFloat(maxPrice),
     };
   }
   else if (minPrice) {
     query.price = {
-      $gte: parseFloat(minPrice), // Ensure minPrice and maxPrice are parsed as floats
+      $gte: parseFloat(minPrice),
     };
   }
   else if (maxPrice) {
@@ -66,16 +37,13 @@ const getProducts = asyncHandler(async (req, res) => {
     };
   }
 
-  // Apply category filter
   if (category) {
     query.category = category;
   }
 
   try {
-    // Count total matching documents
     const count = await Product.countDocuments(query);
 
-    // Find products matching the query
     const products = await Product.find(query)
       .limit(pageSize)
       .skip(pageSize * (page - 1));
