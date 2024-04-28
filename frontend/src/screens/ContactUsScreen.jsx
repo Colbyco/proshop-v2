@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { useSubmitContactFormMutation } from '../slices/contactSlice';
+import { useDispatch } from 'react-redux';
 
 const ContactUsScreen = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,8 @@ const ContactUsScreen = () => {
     message: ''
   });
 
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -17,20 +21,22 @@ const ContactUsScreen = () => {
       [name]: value
     });
   };
+  const [submitContactFormMutation] = useSubmitContactFormMutation(); // Define the mutation outside of the component body
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData);
+      await submitContactFormMutation(formData); // Call the mutation function here
+      toast.success('Message sent successfully!');
       setFormData({
         name: '',
         email: '',
         subject: '',
         message: ''
       });
-      toast.success('Message sent successfully!');
     } catch (error) {
-      toast.error('Failed to send message. Please try again later.');
+      toast.error(error.message || 'Failed to send message. Please try again later.');
     }
   };
 
