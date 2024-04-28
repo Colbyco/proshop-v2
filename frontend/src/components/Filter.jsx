@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGetProductsQuery, useGetProductCategoriesQuery } from '../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 
 
 const Filter = () => {
+    const navigate = useNavigate();
     const { pageNumber, keyword , minPrice: minP, maxPrice: maxP, category} = useParams();
     const [minPrice, setMinPrice] = useState(minP || '');
     const [maxPrice, setMaxPrice] = useState(maxP || '');
