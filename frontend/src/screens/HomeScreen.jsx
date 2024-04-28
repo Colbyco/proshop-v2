@@ -10,7 +10,6 @@ import Filter from '../components/Filter';
 import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 
 
