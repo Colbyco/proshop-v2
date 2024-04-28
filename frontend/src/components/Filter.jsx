@@ -6,10 +6,10 @@ import { toast } from 'react-toastify';
 
 
 const Filter = () => {
-    const { pageNumber, keyword } = useParams();
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const { pageNumber, keyword , minPrice: minP, maxPrice: maxP, category} = useParams();
+    const [minPrice, setMinPrice] = useState(minP || '');
+    const [maxPrice, setMaxPrice] = useState(maxP || '');
+    const [selectedCategory, setSelectedCategory] = useState(category ||'');
     const queryParams = {};
 
     const { data, isLoading, error, refetch } = useGetProductsQuery({
@@ -39,6 +39,7 @@ const Filter = () => {
 
     try {
       refetch({ keyword, pageNumber, ...queryParams });
+      navigate('/');
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     }

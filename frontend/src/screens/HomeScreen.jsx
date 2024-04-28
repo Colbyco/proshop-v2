@@ -14,10 +14,11 @@ import { useState } from 'react';
 
 
 const HomeScreen = () => {
-  const { pageNumber, keyword } = useParams();
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const { pageNumber, keyword , minPrice: minP, maxPrice: maxP, category} = useParams();
+    const [minPrice, setMinPrice] = useState(minP || '');
+    const [maxPrice, setMaxPrice] = useState(maxP || '');
+    const [selectedCategory, setSelectedCategory] = useState(category ||'');
+    const queryParams = {};
 
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     keyword,
