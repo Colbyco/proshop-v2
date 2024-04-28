@@ -28,6 +28,25 @@ const HomeScreen = () => {
     category: selectedCategory,
   });
 
+  const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (minPrice !== "") {
+      queryParams.minPrice = minPrice;
+    }
+
+    if (maxPrice!== "") {
+      queryParams.maxPrice = maxPrice;
+    }
+
+    if (selectedCategory !== "") {
+      queryParams.category = selectedCategory;
+    }
+
+    refetch({ keyword, pageNumber, ...queryParams })
+  };
+
   return (
     <>
       {!keyword ? (
@@ -78,9 +97,6 @@ const HomeScreen = () => {
                   </option>
                 ))}
             </Form.Control>
-          </Col>
-          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
-            <Button type="submit" variant="primary">Apply Filters</Button>
           </Col>
         </Row>
       </Form>
