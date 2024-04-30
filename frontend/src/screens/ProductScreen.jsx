@@ -21,6 +21,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
+import { addToSaved } from '../slices/savedSlice'; // adding saved items to the product screen
 import { TwitterShareButton, PinterestShareButton, RedditShareButton, EmailShareButton, WhatsappShareButton  } from 'react-share';
 import { FaTwitter, FaPinterest, FaReddit, FaEnvelope, FaWhatsapp } from 'react-icons/fa'; // Import icons
 const ProductScreen = () => {
@@ -37,6 +38,12 @@ const ProductScreen = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate('/cart');
   };
+
+  //adding a button to save the item for later
+  const saveToSavedHandler = () => {
+    dispatch(addToSaved({ ...product }));
+    toast.success('Item has been saved');
+  }
 
   const {
     data: product,
@@ -155,6 +162,19 @@ const ProductScreen = () => {
                       Add To Cart
                     </Button>
                     </ListGroup.Item>
+
+
+                    <ListGroup.Item>
+                      <Button
+                        className='btn-block mt-2'
+                        type='button'
+                        disabled={product.countInStock === 0}
+                        onClick={saveToSavedHandler}
+                      >
+                        Save For Later
+                      </Button>
+                    </ListGroup.Item>
+
                     <ListGroup.Item>
                       <div className="social-media-icons">
                         <TwitterShareButton url={window.location.href} title={product.name}>
