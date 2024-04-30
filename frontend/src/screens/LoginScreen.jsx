@@ -53,6 +53,7 @@ const LoginScreen = () => {
     }
   };
 
+  // Function used for creating / logging in a user when they use the Google button
   const googleLoginHandler = async (data) => {
     const name = data.name
     const email = data.email
@@ -62,6 +63,7 @@ const LoginScreen = () => {
     console.log(email)
     console.log(password)
 
+    // Try to log user in
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -69,6 +71,7 @@ const LoginScreen = () => {
     } catch (err) {
       toast.error(err?.data?.message || err.error);
 
+      // If login fails, attempt to create user
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
@@ -79,6 +82,7 @@ const LoginScreen = () => {
     }
   }
 
+  // Function used for creating / logging in a user when they use the Facebook button
   const facebookLoginHandler = async (data) => {
 
     console.log(data)
@@ -91,6 +95,7 @@ const LoginScreen = () => {
     console.log(email)
     console.log(password)
 
+    // Try to log user in
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -98,6 +103,7 @@ const LoginScreen = () => {
     } catch (err) {
       toast.error(err?.data?.message || err.error);
 
+      // If login fails, attempt to create user
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
@@ -152,6 +158,7 @@ const LoginScreen = () => {
 
     </FormContainer>
 
+      {/* Login buttons and the API calls / logic for their implementation */}
       <LoginSocialGoogle
           client_id={'89605462874-ve8ouho7j003b48snc0sl54c2o0hi7n1.apps.googleusercontent.com' || ''}
           scope="openid profile email"
