@@ -6,6 +6,7 @@ import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 
 import { useLoginMutation } from '../slices/usersApiSlice';
+import { useRegisterMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 
@@ -27,6 +28,7 @@ const LoginScreen = () => {
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
+  const [register] = useRegisterMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -51,7 +53,63 @@ const LoginScreen = () => {
     }
   };
 
+  const googleLoginHandler = async (data) => {
+    const name = data.name
+    const email = data.email
+    const password = 'testPassword'
+
+    console.log(name)
+    console.log(email)
+    console.log(password)
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate(redirect);
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+  }
+
+  const facebookLoginHandler = async (data) => {
+
+    console.log(data)
+
+    const name = data.name
+    const email = data.email
+    const password = 'testPassword'
+
+    console.log(name)
+    console.log(email)
+    console.log(password)
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate(redirect);
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+  }
+
   return (
+    <>
     <FormContainer>
       <h1>Sign In</h1>
 
@@ -92,36 +150,35 @@ const LoginScreen = () => {
         </Col>
       </Row>
 
-      <LoginSocialGoogle
-            isOnlyGetToken
-            client_id={process.env.REACT_APP_GG_APP_ID || ''}
-            //onLoginStart={onLoginStart}
-            onResolve={({ provider, data }) => {
-              //setProvider(provider)
-              //setProfile(data)
-            }}
-            onReject={(err) => {
-              console.log(err)
-            }}
-          >
-            <GoogleLoginButton />
-          </LoginSocialGoogle>
+    </FormContainer>
 
-        <LoginSocialFacebook
-          isOnlyGetToken
-          appId={process.env.REACT_APP_FB_APP_ID || ''}
-          //onLoginStart={onLoginStart}
+      <LoginSocialGoogle
+          client_id={'89605462874-ve8ouho7j003b48snc0sl54c2o0hi7n1.apps.googleusercontent.com' || ''}
+          scope="openid profile email"
+          discoveryDocs="claims_supported"
           onResolve={({ provider, data }) => {
-            //setProvider(provider)
-            //setProfile(data)
+            googleLoginHandler(data)
           }}
           onReject={(err) => {
             console.log(err)
           }}
         >
+          <GoogleLoginButton />
+      </LoginSocialGoogle>
+
+      <LoginSocialFacebook
+          isOnlyGetToken
+          appId={"3350820621728312"}
+          onResolve={({ provider, data }) => {
+            facebookLoginHandler(data)
+          }}
+          onReject={err => {
+            console.log(err);
+          }}
+        >
           <FacebookLoginButton />
         </LoginSocialFacebook>
-    </FormContainer>
+    </>
   );
 };
 
