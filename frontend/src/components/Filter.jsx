@@ -1,33 +1,28 @@
+import React, { useState } from 'react';
 import { Row, Col, Button, Form } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useGetProductsQuery, useGetProductCategoriesQuery } from '../slices/productsApiSlice';
-import { useParams, Link } from 'react-router-dom';
-import Product from '../components/Product';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import Paginate from '../components/Paginate';
-import Filter from '../components/Filter';
-import ProductCarousel from '../components/ProductCarousel';
-import Meta from '../components/Meta';
-import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 
-
-const HomeScreen = () => {
-  const { pageNumber, keyword , minPrice: minP, maxPrice: maxP, category} = useParams();
+const Filter = () => {
+    const navigate = useNavigate();
+    const { pageNumber, keyword , minPrice: minP, maxPrice: maxP, category} = useParams();
     const [minPrice, setMinPrice] = useState(minP || '');
     const [maxPrice, setMaxPrice] = useState(maxP || '');
     const [selectedCategory, setSelectedCategory] = useState(category ||'');
     const queryParams = {};
 
-  const { data, isLoading, error, refetch } = useGetProductsQuery({
-    keyword,
-    pageNumber,
-    minPrice,
-    maxPrice,
-    category: selectedCategory,
-  });
+    const { data, isLoading, error, refetch } = useGetProductsQuery({
+        keyword,
+        pageNumber,
+        minPrice,
+        maxPrice,
+        category: selectedCategory,
+      });
+    const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
 
-  const { data: categoriesData, isLoading: isLoadingCategories } = useGetProductCategoriesQuery();
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -43,19 +38,17 @@ const HomeScreen = () => {
       queryParams.category = selectedCategory;
     }
 
-    refetch({ keyword, pageNumber, ...queryParams })
+    try {
+      refetch({ keyword, pageNumber, ...queryParams });
+      navigate('/');
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
+    }
+    // Refetch products with new filter values
   };
 
   return (
-    <>
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to='/' className='btn btn-light mb-4'>
-          Go Back
-        </Link>
-      )}
-        <Form onSubmit={submitHandler} className="mb-4">
+    <Form onSubmit={submitHandler} className="mb-4">
         <Row>
           <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
             <Form.Control
@@ -97,37 +90,12 @@ const HomeScreen = () => {
                 ))}
             </Form.Control>
           </Col>
+          <Col xs={12} sm={6} md={3} lg={2} className="mb-3">
+            <Button type="submit" variant="primary">Apply Filters</Button>
+            </Col>
         </Row>
       </Form>
-
-
-
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>
-          {error?.data?.message || error.error}
-        </Message>
-      ) : (
-        <>
-          <Meta />
-          <h1>Latest Products</h1>
-          <Row>
-            {data.products.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
-            ))}
-          </Row>
-          <Paginate
-            pages={data.pages}
-            page={data.page}
-            keyword={keyword ? keyword : ''}
-          />
-        </>
-      )}
-    </>
   );
 };
 
-export default HomeScreen;
+export default Filter;

@@ -8,21 +8,51 @@ const getProducts = asyncHandler(async (req, res) => {
   const pageSize = process.env.PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
 
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: 'i',
-        },
-      }
-    : {};
+  const { keyword, minPrice, maxPrice, category } = req.query;
 
-  const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+  let query = {};
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  if (keyword) {
+    query.name = {
+      $regex: keyword,
+      $options: 'i',
+    };
+  }
+
+  if (minPrice && maxPrice)
+  {
+    query.price = {
+      $gte: parseFloat(minPrice),
+      $lte: parseFloat(maxPrice),
+    };
+  }
+  else if (minPrice) {
+    query.price = {
+      $gte: parseFloat(minPrice),
+    };
+  }
+  else if (maxPrice) {
+    query.price = {
+      $lte: parseFloat(maxPrice),
+    };
+  }
+
+  if (category) {
+    query.category = category;
+  }
+
+  try {
+    const count = await Product.countDocuments(query);
+
+    const products = await Product.find(query)
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 });
 
 // @desc    Fetch single product
@@ -154,6 +184,21 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
+// @desc    Get categories of products
+// @route   GET /api/product/categories
+// @access  Public
+const getProductCategories = asyncHandler(async (req, res) => {
+  try {
+    const categories = await Product.distinct('category');
+    res.json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+
 export {
   getProducts,
   getProductById,
@@ -162,4 +207,5 @@ export {
   deleteProduct,
   createProductReview,
   getTopProducts,
+  getProductCategories,
 };
